@@ -1,0 +1,6 @@
+Flask
+flask-cors
+tensorflow
+numpy
+Pillow
+protobuf==3.20.*
