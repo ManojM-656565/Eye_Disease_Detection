@@ -1,0 +1,68 @@
+# ------------------------------
+# Python cache / compiled files
+# ------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ------------------------------
+# Virtual environment
+# ------------------------------
+venv/
+.env/
+.env.local/
+
+# ------------------------------
+# Jupyter / IPython
+# ------------------------------
+.ipynb_checkpoints/
+*.ipynb
+
+# ------------------------------
+# ML / Model artifacts (DO NOT COMMIT)
+# ------------------------------
+*.h5
+*.keras
+*.pkl
+*.joblib
+
+# ------------------------------
+# Training outputs / history
+# ------------------------------
+training_history.*
+Training_history.pkl
+
+# ------------------------------
+# Dataset / sample images
+# ------------------------------
+*.jpg
+*.jpeg
+*.png
+*.csv
+
+# ------------------------------
+# Logs
+# ------------------------------
+*.log
+
+# ------------------------------
+# OS / Editor junk
+# ------------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ------------------------------
+# Flask / Python tooling
+# ------------------------------
+instance/
+.pytest_cache/
+.mypy_cache/
+
+# ------------------------------
+# Secrets / keys
+# ------------------------------
+*.key
+*.pem

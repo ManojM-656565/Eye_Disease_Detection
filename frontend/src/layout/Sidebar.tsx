@@ -9,7 +9,7 @@ export default function Sidebar() {
 
   return (
     <aside className="w-60 bg-slate-900 border-r border-slate-800 p-4 flex flex-col">
-      <div className="text-xl font-bold mb-6 text-emerald-400">RetinaApp</div>
+      <div className="text-xl font-bold mb-6 text-emerald-400">RetinaVision</div>
       <nav className="space-y-2 flex-1">
         <NavLink to="/dashboard" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>
           <BarChart3 className="w-5 h-5" />
