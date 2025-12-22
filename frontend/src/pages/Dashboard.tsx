@@ -1,4 +1,3 @@
-import React from "react";
 import RetinaClassifier from "../components/RetinaClassifier";
 
 export default function Dashboard() {

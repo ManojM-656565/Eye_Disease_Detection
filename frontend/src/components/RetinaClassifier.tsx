@@ -385,7 +385,7 @@
 // }
 
 
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -701,7 +701,13 @@ Normal: ${(item.confidences.Normal * 100).toFixed(2)}%
                   <BarChart data={chartData} layout="vertical">
                     <XAxis type="number" domain={[0, 100]} hide />
                     <YAxis type="category" dataKey="name" />
-                    <Tooltip formatter={(v: number) => `${v}%`} />
+                    {/* <Tooltip formatter={(v: number) => `${v}%`} /> */}
+                    <Tooltip
+  formatter={(value) =>
+    typeof value === "number" ? `${value}%` : value
+  }
+/>
+
                     <Bar dataKey="value" barSize={14} />
                   </BarChart>
                 </ResponsiveContainer>
