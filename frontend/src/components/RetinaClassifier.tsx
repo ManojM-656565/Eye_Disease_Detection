@@ -392,6 +392,63 @@ export default function RetinaClassifier() {
   const [result, setResult] = useState<PredictResponse | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const recommendations: Record<Label, string> = {
+  CNV: `For CNV (Choroidal Neovascularization):
+- Immediate Referral: Seek prompt evaluation by a retinal specialist.
+- Treatment Options:
+  • Anti-VEGF Therapy (e.g., Ranibizumab, Aflibercept)
+  • Photodynamic Therapy (PDT) in selected cases
+  • Laser therapy in specific conditions
+- Lifestyle & Monitoring:
+  • Diet rich in leafy greens, omega-3 fatty acids, antioxidants
+  • AREDS2 supplements (if advised by doctor)
+  • OCT monitoring every 1–3 months
+- Next Steps:
+  • Schedule immediate retina specialist consultation
+  • Expect regular intravitreal treatments initially`,
+
+  DME: `For DME (Diabetic Macular Edema):
+- Multidisciplinary Care:
+  • Coordinate with both retina specialist and endocrinologist
+- Treatment Options:
+  • Anti-VEGF injections (first-line)
+  • Corticosteroid implants (if resistant)
+  • Focal/grid laser photocoagulation (selected cases)
+- Systemic Control:
+  • Maintain HbA1c < 7%
+  • Control blood pressure (<140/80 mmHg)
+- Monitoring:
+  • OCT scans every 3–6 months
+- Next Steps:
+  • Optimize diabetes management
+  • Continue regular retinal follow-ups`,
+
+  Drusen: `For Drusen (Early AMD):
+- Dietary Recommendations:
+  • Foods rich in antioxidants (vitamins C, E, zinc, copper)
+  • Omega-3 fatty acids (fish, nuts)
+  • Consider AREDS2 supplements
+- Lifestyle Modifications:
+  • Quit smoking
+  • Use UV-protective sunglasses
+- Monitoring:
+  • OCT scans every 6–12 months
+  • Home monitoring using Amsler grid
+- Next Steps:
+  • Discuss supplements with ophthalmologist
+  • Maintain routine eye check-ups`,
+
+  Normal: `For Normal Retina:
+- Routine Eye Care:
+  • Continue regular eye examinations
+- Eye Health Maintenance:
+  • Balanced diet with leafy greens and omega-3s
+  • UV eye protection
+- Next Steps:
+  • Routine follow-up every 1–2 years
+  • Maintain control of systemic conditions like diabetes or hypertension`,
+};
+
 
   /* -------------------- Effects -------------------- */
   useEffect(() => {
@@ -514,26 +571,47 @@ export default function RetinaClassifier() {
   }
 
   function downloadReport(item: HistoryItem) {
-    const text = `Retina Analysis Report
--------------------------
-File: ${item.name}
-Time: ${item.timestamp}
-Detected: ${item.label}
+  const recommendation = recommendations[item.label];
 
-Confidences:
-CNV: ${(item.confidences.CNV * 100).toFixed(2)}%
-DME: ${(item.confidences.DME * 100).toFixed(2)}%
-Drusen: ${(item.confidences.Drusen * 100).toFixed(2)}%
-Normal: ${(item.confidences.Normal * 100).toFixed(2)}%
+  const text = `Retina Analysis Report
+=================================
+
+File Name   : ${item.name}
+Date & Time : ${new Date(item.timestamp).toLocaleString()}
+Detected    : ${item.label}
+
+---------------------------------
+Confidence Scores
+---------------------------------
+CNV     : ${(item.confidences.CNV * 100).toFixed(2)}%
+DME     : ${(item.confidences.DME * 100).toFixed(2)}%
+Drusen  : ${(item.confidences.Drusen * 100).toFixed(2)}%
+Normal  : ${(item.confidences.Normal * 100).toFixed(2)}%
+
+---------------------------------
+Medical Recommendation
+---------------------------------
+${recommendation}
+
+---------------------------------
+Disclaimer
+---------------------------------
+This report is generated for educational and assistive purposes only.
+It does NOT replace professional medical diagnosis or treatment.
+Please consult a qualified ophthalmologist for clinical decisions.
 `;
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `retina_report_${item.id}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `retina_report_${item.id}.txt`;
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
 
   const chartData = result
     ? (Object.keys(result.confidences) as Label[]).map((k) => ({
@@ -621,9 +699,10 @@ Normal: ${(item.confidences.Normal * 100).toFixed(2)}%
                 </div>
                 <button
                   onClick={() => downloadReport(h)}
-                  className="text-xs underline"
+                  className="text-sm bg-emerald-600 text-black px-3 py-1 rounded hover:bg-emerald-700 transition 
+          "
                 >
-                  Download
+                  Download Result
                 </button>
               </div>
             ))}
@@ -703,6 +782,7 @@ Normal: ${(item.confidences.Normal * 100).toFixed(2)}%
       />
     </AreaChart>
   </ResponsiveContainer>
+  
 </div>
 
 
